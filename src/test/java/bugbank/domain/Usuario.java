@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static bugbank.utils.GenericsUtils.removerAcentos;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,7 +17,7 @@ public class Usuario {
     public Usuario(String nome, String email, String senha)
     {
         this.nome = nome;
-        this.email = removerAcentos(email);
+        this.email = email;
         this.senha = senha;
     }
 

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Transferencia {
+public class Transacao {
     private Usuario recebedor;
     private double valor;
     private String descricao;
