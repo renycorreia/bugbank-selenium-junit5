@@ -101,8 +101,8 @@ class TransferenciaEntreNovasContasTests {
 		assertEquals("A conta", textoModal.substring(0, 7));
 		assertEquals("foi criada com sucesso", textoModal.substring(textoModal.length() - 22));
 
-		String stringConta = textoModal.substring(8, 13);
-		int numeroConta = Integer.parseInt(stringConta.substring(0, 3)), digitoConta = Integer.parseInt(stringConta.substring(stringConta.length() - 1));
+		String stringConta = textoModal.split(" ")[2];
+		int numeroConta = Integer.parseInt(stringConta.split("-")[0]), digitoConta = Integer.parseInt(stringConta.split("-")[1]);
 		usuario.setNumeroConta(numeroConta);
 		usuario.setDigitoConta(digitoConta);
 
