@@ -4,6 +4,8 @@ import bugbank.domain.Transacao;
 import bugbank.domain.Usuario;
 
 import com.github.javafaker.Faker;
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,21 +30,24 @@ import static bugbank.pages.TransferenciaPage.btnVoltar;
 import static bugbank.utils.GenericsUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TransferenciaEntreNovasContasTests {
+public class TransferenciaEntreNovasContasTests {
 	WebDriver driver = new ChromeDriver();
 
 	@BeforeEach
-	void setUp(){
+	public void setUp(){
 		driver.get("https://bugbank.netlify.app/");
 	}
 
 	@AfterEach
-	void tearDown(){
+	public void tearDown(){
 		driver.quit();
 	}
 
 	@Test
-	void testE2E() {
+	@Description("Cadastro de dois novos clientes com saldo, " +
+			"transferência de um para o outro " +
+			"e conferência de ambos os extratos")
+	public void testE2E() {
 
 		Faker faker = new Faker(new Locale("pt_BR"));
 		String name, email, senha;
@@ -65,6 +70,8 @@ class TransferenciaEntreNovasContasTests {
 		validarExtratoRecebedor(driver, usuario2, transacao);
 	}
 
+	@Step("Cadastrar usuário." +
+			"Preencher email: {usuario.email}, nome: {usuario.nome} e senha: {usuario.senha}")
 	public void registrarUsuario(WebDriver driver, Usuario usuario, boolean temSaldo) {
 		btnRegistrar(driver).click();
 
@@ -109,6 +116,8 @@ class TransferenciaEntreNovasContasTests {
 		btnfecharModal(driver).click();
 	}
 
+	@Step("Login com o primeiro usuário cadastrado." +
+			"Preencher email: {usuarioLogado.email} e senha: {usuarioLogado.senha}")
 	public Usuario realizarLogin(WebDriver driver, Usuario usuarioLogado) {
 
 		login (driver, usuarioLogado);
@@ -124,12 +133,14 @@ class TransferenciaEntreNovasContasTests {
 		return usuarioLogado;
 	}
 
+	@Step("Gravar o saldo inicial após primeiro login")
 	public void atualizarSaldo(WebDriver driver, Usuario usuario) {
 		String textoSpan = spanValorSaldo(driver).getText();
 		String saldoTratado = textoSpan.replace("R$ ", "").replace(",00","").replace(".","");
 		usuario.setSaldo(Float.parseFloat(saldoTratado));
 	}
 
+	@Step("Realizar transferência de '{usuarioLogado.nome}' para '{usuarioAReceberTransferencia.nome}'")
 	public Transacao realizarTransferencia(WebDriver driver, Usuario usuarioLogado, Usuario usuarioAReceberTransferencia) {
 
 		double numRandom = (Math.random() * usuarioLogado.getSaldo()) + 1;
@@ -175,12 +186,13 @@ class TransferenciaEntreNovasContasTests {
 		return transacao;
 	}
 
+	@Step("Validar extrato do transferente.")
 	public void validarExtratoTransferente(WebDriver driver, Transacao transacao) {
-
 		btnExtrato(driver).click();
 		extrato(driver, transacao, "Transferência enviada");
 	}
 
+	@Step("Validar extrato do recebedor.")
 	public void validarExtratoRecebedor(WebDriver driver, Usuario usuario, Transacao transacao) {
 		WebElement btnSair = driver.findElement(By.id("btnExit"));
 		btnSair.click();
@@ -192,5 +204,4 @@ class TransferenciaEntreNovasContasTests {
 
 		extrato(driver, transacao, "Transferência recebida");
 	}
-
 }

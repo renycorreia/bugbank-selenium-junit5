@@ -1,10 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.racp</groupId>
 	<artifactId>bugbank</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<allure.version>2.12.0</allure.version>
+		<allure.cmd.download.url>
+			https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline
+		</allure.cmd.download.url>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
@@ -18,9 +25,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-reporting</artifactId>
-			<version>1.9.1</version>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.10</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -30,16 +37,15 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.10</version>
-			<scope>provided</scope>
+			<groupId>io.qameta.allure</groupId>
+			<artifactId>allure-junit5</artifactId>
+			<version>${allure.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>RELEASE</version>
-			<scope>test</scope>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-chrome-driver</artifactId>
+			<version>4.9.1</version>
 		</dependency>
 	</dependencies>
 	<build>
@@ -58,18 +64,33 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.1.2</version>
 				<configuration>
-					<properties>
-						<configurationParameters>
-							junit.platform.reporting.open.xml.enabled = true
-							junit.platform.reporting.output.dir = target/surefire-reports
-						</configurationParameters>
-					</properties>
+					<useSystemClassLoader>false</useSystemClassLoader>
+					<testFailureIgnore>false</testFailureIgnore>
+					<argLine> -Dfile.encoding=UTF-8
+						-javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/1.9.19/aspectjweaver-1.9.19.jar
+					</argLine>
+					<systemPropertyVariables>
+						<allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
+					</systemPropertyVariables>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjweaver</artifactId>
+						<version>1.9.19</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-report-plugin</artifactId>
-				<version>3.1.2</version>
+				<groupId>io.qameta.allure</groupId>
+				<artifactId>allure-maven</artifactId>
+				<version>${allure.version}</version>
+				<configuration>
+					<reportVersion>2.12.0</reportVersion>
+					<allureDownloadUrl>
+						${allure.cmd.download.url}/${allure.version}/allure-commandline-${allure.version}.zip
+					</allureDownloadUrl>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
