@@ -1,0 +1,2 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Tue Jul 18 16:48:46 GMT 2023","Tue Jul 18 16:49:02 GMT 2023","16312","","bugbank.tests.TransferenciaEntreNovasContasTests","","bugbank.tests.TransferenciaEntreNovasContasTests","testE2E","testE2E()","Cadastro de dois novos clientes com saldo, transferência de um para o outro e conferência de ambos os extratos"
