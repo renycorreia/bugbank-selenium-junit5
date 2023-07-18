@@ -1,0 +1,1 @@
+{"6dced69616f9beb80fdca6b23cd185b5":{"statistic":{"failed":0,"broken":0,"skipped":0,"passed":1,"unknown":0,"total":1},"items":[{"uid":"e752be841aada16c","reportUrl":"https://renycorreia.github.io/bugbank-selenium-junit5/1//#testresult/e752be841aada16c","status":"passed","time":{"start":1689697371747,"stop":1689697396839,"duration":25092}}]}}
