@@ -1,12 +1,11 @@
-# Eclipse
-.classpath
-.project
-.settings/
-
-# IntelliJ
+# IDE-specific files
+.vscode/
 .idea/
 *.iml
 out/
+.classpath
+.project
+.settings/
 
 # Maven
 target/
@@ -29,5 +28,5 @@ chromedriver.log
 # Temporary files
 *.tmp
 
-# IDE-specific files
-.vscode/
+# Allure
+.allure/

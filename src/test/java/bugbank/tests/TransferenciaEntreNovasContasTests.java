@@ -4,6 +4,7 @@ import bugbank.domain.Transacao;
 import bugbank.domain.Usuario;
 
 import com.github.javafaker.Faker;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import org.junit.jupiter.api.AfterEach;
@@ -13,12 +14,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import static bugbank.pages.GenericsPage.*;
 import static bugbank.pages.GenericsPage.btnfecharModal;
@@ -31,11 +34,27 @@ import static bugbank.utils.GenericsUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TransferenciaEntreNovasContasTests {
-	WebDriver driver = new ChromeDriver();
+	WebDriver driver;
 
 	@BeforeEach
 	public void setUp(){
+
+		WebDriverManager.chromedriver().setup();
+		ChromeOptions options = new ChromeOptions();
+
+		boolean isHeadless = Boolean.parseBoolean(System.getProperty("HEADLESS"));
+
+		if (isHeadless) {
+			options.addArguments("--no-sandbox");
+			options.addArguments("--disable-dev-shm-usage");
+			options.addArguments("--headless");
+			options.addArguments("--window-size=1366,768");
+		}
+
+		driver = new ChromeDriver(options);
+
 		driver.get("https://bugbank.netlify.app/");
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.MILLISECONDS);
 	}
 
 	@AfterEach
