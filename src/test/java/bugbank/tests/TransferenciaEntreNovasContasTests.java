@@ -1,66 +1,32 @@
 package bugbank.tests;
 
+import bugbank.bases.TestBase;
 import bugbank.domain.Transacao;
 import bugbank.domain.Usuario;
 
 import com.github.javafaker.Faker;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import static bugbank.pages.GenericsPage.*;
-import static bugbank.pages.GenericsPage.btnfecharModal;
 import static bugbank.pages.HomePage.*;
-import static bugbank.pages.LoginPage.btnRegistrar;
+import static bugbank.pages.LoginPage.*;
 import static bugbank.pages.RegistroPage.*;
 import static bugbank.pages.TransferenciaPage.*;
-import static bugbank.pages.TransferenciaPage.btnVoltar;
 import static bugbank.utils.GenericsUtils.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class TransferenciaEntreNovasContasTests {
-	WebDriver driver;
-
-	@BeforeEach
-	public void setUp(){
-
-		WebDriverManager.chromedriver().setup();
-		ChromeOptions options = new ChromeOptions();
-
-		boolean isHeadless = Boolean.parseBoolean(System.getProperty("HEADLESS"));
-
-		if (isHeadless) {
-			options.addArguments("--no-sandbox");
-			options.addArguments("--disable-dev-shm-usage");
-			options.addArguments("--headless");
-			options.addArguments("--window-size=1366,768");
-		}
-
-		driver = new ChromeDriver(options);
-
-		driver.get("https://bugbank.netlify.app/");
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.MILLISECONDS);
-	}
-
-	@AfterEach
-	public void tearDown(){
-		driver.quit();
-	}
+public class TransferenciaEntreNovasContasTests extends TestBase {
 
 	@Test
 	@Description("Cadastro de dois novos clientes com saldo, " +
